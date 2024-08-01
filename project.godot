@@ -15,6 +15,14 @@ run/main_scene="res://scenes/test_scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [dotnet]
 
 project/assembly_name="Little-dragon"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
