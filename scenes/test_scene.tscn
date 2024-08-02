@@ -1,12 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://c1h7ahujb7cda"]
 
-[ext_resource type="PackedScene" uid="uid://bekoe1fkgbj2g" path="res://assets/resources/player.tscn" id="1_f6tan"]
+[ext_resource type="PackedScene" uid="uid://coipg3p5pwtpm" path="res://scenes/actors/player.tscn" id="1_6tdi3"]
 [ext_resource type="PackedScene" uid="uid://40u2s1b8mtsc" path="res://assets/resources/test grounf.tscn" id="2_hcqpe"]
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_f6tan")]
-position = Vector2(558, 166)
+[node name="Player" parent="." instance=ExtResource("1_6tdi3")]
+position = Vector2(560, 168)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 limit_left = 0
