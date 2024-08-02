@@ -22,6 +22,7 @@ enum {
 @export_range(0.001, 1.0) var descent_time := 0.40
 @export var max_jumps := 2
 @export var coyote_time := 0.08
+@export var jumpbuffer_time := 0.1
 
 @export_group("Dash")
 @export var dash_ground := 600.0
@@ -43,6 +44,7 @@ var _was_on_floor := false
 @onready var _gravity := (jump_height * 2.0) / (ascent_time ** 2)
 
 @onready var _coyote_timer: SceneTreeTimer
+@onready var _jumpbuf_timer: SceneTreeTimer
 
 func _process(_delta: float) -> void:
 	if _is_paused:
@@ -51,11 +53,9 @@ func _process(_delta: float) -> void:
 	_dir = Input.get_axis("move_left", "move_right")
 
 	if Input.is_action_just_pressed("move_jump"):
-		_air_state = ST_JUMP
 		_is_jumping = true
 
 	if Input.is_action_just_released("move_jump"):
-		_is_jumping = false
 		_cut_jump = velocity.y < 0.0
 
 
@@ -63,25 +63,19 @@ func _physics_process(delta: float) -> void:
 	if _is_paused:
 		return
 
-	_move_walk(delta)
-
-	match _air_state:
-		ST_FALL:
-			_apply_gravity(delta)
-		ST_JUMP:
-			_move_jump(delta)
+	_update_ground(delta)
+	_update_air(delta)
 
 	move_and_slide()
 
 	if is_on_floor():
-		_air_state = ST_FALL
 		_rem_jumps = max_jumps
-		_was_on_floor = true
 		_is_jumping = false
+		_was_on_floor = true
 		_coyote_timer = null
 
 
-func _move_walk(delta: float) -> void:
+func _update_ground(delta: float) -> void:
 	if is_zero_approx(_dir):
 		_ground_state = ST_IDLE
 	else:
@@ -100,6 +94,20 @@ func _move_walk(delta: float) -> void:
 			velocity.x = clamp(velocity.x, -max_speed, max_speed)
 
 
+func _update_air(delta: float) -> void:
+	if is_on_floor() and not _is_jump_buffered():
+		_air_state = ST_FALL
+
+	if _is_jumping or _is_jump_buffered():
+		_air_state = ST_JUMP
+
+	match _air_state:
+		ST_FALL:
+			_apply_gravity(delta)
+		ST_JUMP:
+			_do_jump(delta)
+
+
 func _apply_gravity(delta: float) -> void:
 	if _is_coyotetimer_running():
 		return
@@ -114,15 +122,21 @@ func _apply_gravity(delta: float) -> void:
 		velocity.y = 0.0 # Reset gravity to let the player jump
 
 
-func _move_jump(delta: float) -> void:
+func _do_jump(delta: float) -> void:
 	velocity.y += _jump_gravity * delta
 
-	if _is_jumping:
+	if _is_jumping or _is_jump_buffered():
 		# Allow player jump mid-air if there are remaing jumps to use
 		var has_jumps := _rem_jumps > 0 and _rem_jumps <= max_jumps
+
+		# Only allow player to jump if is on floor, or it has jumps left
+		# or the coyote is timing
 		if is_on_floor() or has_jumps or _is_coyotetimer_running():
 			velocity.y = _jump_impulse
 			_rem_jumps -= 1
+			_jumpbuf_timer = null
+		elif not _is_jump_buffered():
+			_jumpbuf_timer = get_tree().create_timer(jumpbuffer_time)
 
 		_is_jumping = false
 		_coyote_timer = null # Destroy the timer, we don't need it anymore
@@ -134,4 +148,8 @@ func _move_jump(delta: float) -> void:
 
 
 func _is_coyotetimer_running() -> bool:
-	return _coyote_timer != null and _coyote_timer.time_left > 0.0
+	return _coyote_timer != null and not is_zero_approx(_coyote_timer.time_left)
+
+
+func _is_jump_buffered() -> bool:
+	return _jumpbuf_timer != null and not is_zero_approx(_jumpbuf_timer.time_left)
