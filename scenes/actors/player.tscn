@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://coipg3p5pwtpm"]
+[gd_scene load_steps=6 format=3 uid="uid://coipg3p5pwtpm"]
 
 [ext_resource type="Script" path="res://scenes/actors/player.gd" id="1_xn4dn"]
 [ext_resource type="Texture2D" uid="uid://f81h57u1vqhp" path="res://assets/sprites/test.png" id="2_nsjek"]
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="3_f8k5p"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_14nni"]
 size = Vector2(32, 32)
@@ -26,3 +27,6 @@ shape = SubResource("RectangleShape2D_14nni")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_eo4ny")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("3_f8k5p")
