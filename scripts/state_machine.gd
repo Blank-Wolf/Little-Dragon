@@ -77,12 +77,13 @@ func _set_state(state: String) -> void:
 
 	if _state != null:
 		_state._exit()
-		previous_state = current_state
 
+	previous_state = current_state
 	current_state = state
+
 	_state = get_node(_states[state].path)
+	_state.connect("completed", _on_state_completed, CONNECT_ONE_SHOT | CONNECT_DEFERRED)
 	_state._enter(_msg)
-	_state.connect("completed", _on_state_completed, CONNECT_ONE_SHOT)
 
 	state_changed.emit(state)
 
