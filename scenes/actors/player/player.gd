@@ -58,30 +58,45 @@ var _jumpbuf_timer: SceneTreeTimer
 @onready var _jump_gravity := (jump_height * 2.0) / (descent_time ** 2.0)
 @onready var _fall_gravity := (jump_height * 2.0) / (ascent_time ** 2.0)
 
+func _ready() -> void:
+	var ground_states: Array[Dictionary] = [
+		{
+			"name": "Idle",
+			"path": "OnIdle",
+			"change_to": [ "Fall", "Jump", "Walk" ]
+		},
+		{
+			"name": "Walk",
+			"path": "OnWalk",
+			"change_to": [ "Idle", "Fall", "Jump" ]
+		},
+	]
 
-func _process(_delta: float) -> void:
+	var air_states: Array[Dictionary] = [
+		{
+			"name": "Ground",
+			"path": "OnGround",
+			"change_to": [ "Fall", "Jump" ]
+		},
+		{
+			"name": "Fall",
+			"path": "OnFall",
+			"change_to": [ "Ground", "Jump"]
+		},
+		{
+			"name": "Jump",
+			"path": "OnJump",
+			"change_to": [ "Fall", "Ground" ]
+		},
+	]
+
+	$GroundStates.setup(ground_states, "Idle")
+	$AirStates.setup(air_states, "Ground")
+
+
+func _physics_process(_delta: float) -> void:
 	if _is_paused:
 		return
-
-	_dir = Input.get_axis("move_left", "move_right")
-	_prev_dir = _dir if _dir != 0.0 else _prev_dir
-
-	if Input.is_action_just_pressed("action_dash"):
-		_is_dashing = true
-
-	if Input.is_action_just_pressed("move_jump"):
-		_is_jumping = true
-
-	if Input.is_action_just_released("move_jump"):
-		_cut_jump = velocity.y < 0.0
-
-
-func _physics_process(delta: float) -> void:
-	if _is_paused:
-		return
-
-	_handle_ground_state(delta)
-	_handle_air_state(delta)
 
 	move_and_slide()
 

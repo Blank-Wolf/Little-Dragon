@@ -1,0 +1,76 @@
+[gd_scene load_steps=13 format=3 uid="uid://coipg3p5pwtpm"]
+
+[ext_resource type="Script" path="res://scenes/actors/player/player.gd" id="1_xn4dn"]
+[ext_resource type="Texture2D" uid="uid://f81h57u1vqhp" path="res://assets/sprites/test.png" id="2_nsjek"]
+[ext_resource type="Script" path="res://scripts/components/movement_component.gd" id="3_ddbir"]
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="3_f8k5p"]
+[ext_resource type="Script" path="res://scripts/components/player_controller.gd" id="3_xioh4"]
+[ext_resource type="Script" path="res://scripts/states/ground/on_idle.gd" id="6_ngji1"]
+[ext_resource type="Script" path="res://scripts/states/ground/on_walk.gd" id="7_wbyc1"]
+[ext_resource type="Script" path="res://scripts/states/air/on_ground.gd" id="8_y5m0b"]
+[ext_resource type="Script" path="res://scripts/states/air/on_fall.gd" id="9_guyyn"]
+[ext_resource type="Script" path="res://scripts/states/air/on_jump.gd" id="10_84s2a"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_14nni"]
+size = Vector2(32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eo4ny"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_nsjek")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Player" type="CharacterBody2D"]
+collision_mask = 2
+script = ExtResource("1_xn4dn")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_14nni")
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_eo4ny")
+
+[node name="PlayerController" type="Node" parent="."]
+script = ExtResource("3_xioh4")
+
+[node name="MovementComponent" type="Node" parent="." node_paths=PackedStringArray("body")]
+script = ExtResource("3_ddbir")
+body = NodePath("..")
+
+[node name="GroundStates" type="Node" parent="." node_paths=PackedStringArray("root")]
+script = ExtResource("3_f8k5p")
+root = NodePath("..")
+
+[node name="OnIdle" type="Node" parent="GroundStates" node_paths=PackedStringArray("movement", "controller")]
+script = ExtResource("6_ngji1")
+movement = NodePath("../../MovementComponent")
+controller = NodePath("../../PlayerController")
+
+[node name="OnWalk" type="Node" parent="GroundStates" node_paths=PackedStringArray("movement", "controller")]
+script = ExtResource("7_wbyc1")
+movement = NodePath("../../MovementComponent")
+controller = NodePath("../../PlayerController")
+
+[node name="AirStates" type="Node" parent="." node_paths=PackedStringArray("root")]
+script = ExtResource("3_f8k5p")
+root = NodePath("..")
+
+[node name="OnGround" type="Node" parent="AirStates" node_paths=PackedStringArray("movement", "controller")]
+script = ExtResource("8_y5m0b")
+movement = NodePath("../../MovementComponent")
+controller = NodePath("../../PlayerController")
+
+[node name="OnFall" type="Node" parent="AirStates" node_paths=PackedStringArray("movement", "controller")]
+script = ExtResource("9_guyyn")
+movement = NodePath("../../MovementComponent")
+controller = NodePath("../../PlayerController")
+
+[node name="OnJump" type="Node" parent="AirStates" node_paths=PackedStringArray("movement", "controller")]
+script = ExtResource("10_84s2a")
+movement = NodePath("../../MovementComponent")
+controller = NodePath("../../PlayerController")
