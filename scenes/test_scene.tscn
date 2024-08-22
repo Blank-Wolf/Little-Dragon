@@ -1,10 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1h7ahujb7cda"]
+[gd_scene load_steps=7 format=3 uid="uid://c1h7ahujb7cda"]
 
 [ext_resource type="PackedScene" uid="uid://coipg3p5pwtpm" path="res://scenes/actors/player/player.tscn" id="1_6tdi3"]
 [ext_resource type="Texture2D" uid="uid://f81h57u1vqhp" path="res://assets/sprites/test.png" id="2_mk3cf"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ul0kh"]
-size = Vector2(32, 32)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ytwps"]
+size = Vector2(1024, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_33g3k"]
+size = Vector2(1024, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2dglh"]
+size = Vector2(1024, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xf0pt"]
+size = Vector2(32, 256)
 
 [node name="Node2D" type="Node2D"]
 
@@ -18,37 +27,53 @@ editor_draw_limits = true
 editor_draw_drag_margin = true
 
 [node name="TestGround" type="StaticBody2D" parent="."]
-position = Vector2(552, 859)
-scale = Vector2(28.1, -1.14286)
+position = Vector2(600, 904)
 collision_layer = 2
 collision_mask = 0
+metadata/_edit_group_ = true
 
 [node name="Shape" type="CollisionShape2D" parent="TestGround"]
-shape = SubResource("RectangleShape2D_ul0kh")
+shape = SubResource("RectangleShape2D_ytwps")
 
 [node name="Sprite" type="Sprite2D" parent="TestGround"]
+scale = Vector2(32, 1)
 texture = ExtResource("2_mk3cf")
 
 [node name="TestGround2" type="StaticBody2D" parent="."]
-position = Vector2(932, 390)
-scale = Vector2(28.1, -1.14286)
+position = Vector2(920, 392)
 collision_layer = 2
 collision_mask = 0
+metadata/_edit_group_ = true
 
 [node name="Shape" type="CollisionShape2D" parent="TestGround2"]
-shape = SubResource("RectangleShape2D_ul0kh")
+shape = SubResource("RectangleShape2D_33g3k")
 
 [node name="Sprite" type="Sprite2D" parent="TestGround2"]
+scale = Vector2(32, 1)
 texture = ExtResource("2_mk3cf")
 
 [node name="TestGround3" type="StaticBody2D" parent="."]
-position = Vector2(44, 651)
-scale = Vector2(28.1, -1.14286)
+position = Vector2(48, 648)
 collision_layer = 2
 collision_mask = 0
+metadata/_edit_group_ = true
 
 [node name="Shape" type="CollisionShape2D" parent="TestGround3"]
-shape = SubResource("RectangleShape2D_ul0kh")
+shape = SubResource("RectangleShape2D_2dglh")
 
 [node name="Sprite" type="Sprite2D" parent="TestGround3"]
+scale = Vector2(32, 1)
+texture = ExtResource("2_mk3cf")
+
+[node name="TestGround4" type="StaticBody2D" parent="."]
+position = Vector2(192, 504)
+collision_layer = 2
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="Shape" type="CollisionShape2D" parent="TestGround4"]
+shape = SubResource("RectangleShape2D_xf0pt")
+
+[node name="Sprite" type="Sprite2D" parent="TestGround4"]
+scale = Vector2(1, 8)
 texture = ExtResource("2_mk3cf")

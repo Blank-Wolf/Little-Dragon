@@ -4,7 +4,8 @@ extends Node
 
 signal state_changed(next: String)
 
-@export var root: Node = owner
+@export var enabled := true
+@export var root: Node
 
 var current_state := ""
 var previous_state := ""
@@ -12,7 +13,6 @@ var previous_state := ""
 var _states: Dictionary
 var _state: BaseState
 var _next_state := ""
-var _msg: Dictionary
 
 
 func _process(delta: float) -> void:
@@ -24,12 +24,12 @@ func _process(delta: float) -> void:
 			push_warning("State '%s' is not registered" % _next_state)
 		_next_state = ""
 
-	if _state != null:
+	if _state != null and enabled:
 		_state._update(delta);
 
 
 func _physics_process(delta: float) -> void:
-	if _state != null:
+	if _state != null and enabled:
 		_state._physics_update(delta)
 
 
@@ -49,11 +49,11 @@ func setup(states: Array[Dictionary], init: String) -> void:
 	_set_state(init)
 
 
-## Register a new state to the machine: [br]
-## [param name]: Unique state key on the Dictionary [br]
-## [param path]: Path relative to the StateMachine node on the SceneTree [br]
+## Register a new state to the machine. [br]
+## [param name]: Unique state key on the Dictionary. [br]
+## [param path]: Path relative to the StateMachine node on the SceneTree. [br]
 ## [param change_to]: Array of strings containing the state names the state can
-## transition to
+## transition to.
 func add_state(state_name: String, path: NodePath, change_to: PackedStringArray) -> void:
 	if _states.has(name):
 		push_warning("StateMachine already has state named: %s" % name)
@@ -64,43 +64,33 @@ func add_state(state_name: String, path: NodePath, change_to: PackedStringArray)
 		push_error("Unable to get node: %s" % path)
 		return
 
-	state.owner = root
+	state.owner = root if root != null else owner
 	state.machine = self
-	state.registered.emit()
+	state._register()
 	_states[state_name] = { "path": path, "change_to": change_to }
 
 
-func _set_state(state: String) -> void:
-	if state not in _states:
-		push_warning("State '%s' is not registered" % state)
-		return # Cannot change to an invalid state
+## Set next state to the machine transition to. [br]
+## [param next]: State name to set as next to go
+func set_next_state(next: String) -> void:
+	# If the next state was registered, change to it
+	var change_to: PackedStringArray = _states[current_state].change_to
+	if change_to.has(next) and next in _states:
+		_next_state = next
+	else:
+		push_warning("Current state cannot change to: %s" % next)
 
+
+func _set_state(state: String) -> void:
+	# The states can return some data to send to the next state
+	var msg := {}
 	if _state != null:
-		_state._exit()
+		msg = _state._exit()
 
 	previous_state = current_state
 	current_state = state
 
 	_state = get_node(_states[state].path)
-	_state.connect("completed", _on_state_completed, CONNECT_ONE_SHOT | CONNECT_DEFERRED)
-	_state._enter(_msg)
+	_state._enter(msg)
 
 	state_changed.emit(state)
-
-
-func _on_state_completed(next: String, msg: Dictionary) -> void:
-	if not _next_state.is_empty() or next == current_state:
-		return
-
-	# If the next state was registered, transition to it, if not,
-	# go to the previous state.
-	var change_to: PackedStringArray = _states[current_state].change_to
-	if change_to.has(next):
-		_next_state = next
-	elif not previous_state.is_empty():
-		_next_state = previous_state
-	else:
-		push_error("Failed to set change current state to: %s" % next)
-		return
-
-	_msg = msg.duplicate()
