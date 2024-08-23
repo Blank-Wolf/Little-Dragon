@@ -9,40 +9,37 @@ extends CharacterBody2D
 
 
 func _ready() -> void:
-	var states: Array[Dictionary] = [
-		{
-			"name": "Idle",
-			"path": "OnIdle",
-			"change_to": [ "Dash", "Fall", "Jump", "Walk" ]
-		},
-		{
-			"name": "Walk",
-			"path": "OnWalk",
-			"change_to": [ "Dash", "Fall", "Idle", "Jump" ]
-		},
-		{
-			"name": "Fall",
-			"path": "OnFall",
-			"change_to": [ "Dash", "Idle", "Jump"]
-		},
-		{
-			"name": "Jump",
-			"path": "OnJump",
-			"change_to": [ "Dash", "Fall" ]
-		},
-		{
-			"name": "Dash",
-			"path": "OnDash",
-			"change_to": [ "Idle" ],
-		},
-	]
+	var states: Dictionary = {
+		"Idle": StateData.new($StateMachine/OnIdle, {
+			"Fall": _is_falling,
+			"Jump": _can_try_jump,
+			"Dash": _can_try_dash,
+			"Walk": func(): return _controller.direction.x != 0.0,
+		}),
+		"Walk": StateData.new($StateMachine/OnWalk, {
+			"Fall": _is_falling,
+			"Jump": _can_try_jump,
+			"Dash": _can_try_dash,
+			"Idle": func(): return _controller.direction.x == 0.0,
+		}),
+		"Fall": StateData.new($StateMachine/OnFall, {
+			"Idle": is_on_floor,
+			"Jump": _can_try_jump,
+			"Dash": _can_try_dash,
+		}),
+		"Jump": StateData.new($StateMachine/OnJump, {
+			"Fall": _is_falling,
+			"Dash": _can_try_dash,
+		}),
+		"Dash": StateData.new($StateMachine/OnDash, {
+			"Idle": func(): return velocity == Vector2.ZERO,
+		}),
+	}
 
-	_state_machine.setup(states, "Idle")
+	_state_machine.setup("Idle", states)
 
 
 func _physics_process(_delta: float) -> void:
-	_handle_statemachine()
-
 	move_and_slide()
 
 	if is_on_floor():
@@ -50,46 +47,8 @@ func _physics_process(_delta: float) -> void:
 		_dash.reset()
 
 
-func _handle_statemachine() -> void:
-	var next_state := ""
-
-	match _state_machine.current_state:
-		"Idle":
-			if not is_on_floor():
-				next_state = "Fall"
-			elif _can_try_jump():
-				next_state = "Jump"
-			elif _can_try_dash():
-				next_state = "Dash"
-			elif _controller.direction.x != 0.0:
-				next_state = "Walk"
-		"Walk":
-			if not is_on_floor():
-				next_state = "Fall"
-			elif _can_try_jump():
-				next_state = "Jump"
-			elif _can_try_dash():
-				next_state = "Dash"
-			elif _controller.direction.x == 0.0:
-				next_state = "Idle"
-		"Fall":
-			if is_on_floor():
-				next_state = "Idle"
-			elif _can_try_jump():
-				next_state = "Jump"
-			elif _can_try_dash():
-				next_state = "Dash"
-		"Jump":
-			if velocity.y >= 0.0:
-				next_state = "Fall"
-			elif _can_try_dash():
-				next_state = "Dash"
-		"Dash":
-			if velocity == Vector2.ZERO:
-				next_state = "Idle"
-
-	if not next_state.is_empty():
-		_state_machine.set_next_state(next_state)
+func _is_falling() -> bool:
+	return not is_on_floor() or velocity.y > 0.0
 
 
 func _can_try_jump() -> bool:
