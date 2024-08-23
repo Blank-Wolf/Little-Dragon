@@ -14,7 +14,6 @@ func _enter(_msg: Dictionary) -> void:
 
 
 func _physics_update(delta: float) -> void:
-	print(owner.velocity)
 	_jump.apply_gravity(delta, _jump.GravityKind.JUMP)
 	_jump.try_corner_correct(delta, false)
 

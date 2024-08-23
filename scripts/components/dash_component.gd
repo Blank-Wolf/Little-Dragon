@@ -11,9 +11,9 @@ var _rem_dashs := max_dashs
 @onready var _dash_impulse := (dash_distance * 2.0) / dash_stop_time
 @onready var _dash_stopper := (dash_distance * 2.0) / (dash_stop_time ** 2.0)
 
+
 func _ready() -> void:
-	if owner is not CharacterBody2D:
-		push_error("Jump component owner is not a CharacterBody2D")
+	assert(owner is CharacterBody2D, "Component owner is not a CharacterBody2D")
 
 
 func reset() -> void:

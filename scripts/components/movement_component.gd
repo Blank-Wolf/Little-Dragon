@@ -11,16 +11,13 @@ extends Node
 
 
 func _ready() -> void:
-	if owner is not CharacterBody2D:
-		push_error("Component owner is not a CharacterBody2D")
+	assert(owner is CharacterBody2D, "Component owner is not a CharacterBody2D")
 
 
-func apply_acceleration(delta: float, dir: float, can_slip: bool = false) -> void:
-	var accel := _acceleration
-	if not can_slip and dir != signf(owner.get_last_motion().x):
-		accel *= 2.0 # Prevent slipping behavior
-
-	owner.velocity.x = move_toward(owner.velocity.x, max_speed * dir, accel * delta)
+func apply_acceleration(delta: float, dir: float) -> void:
+	owner.velocity.x = move_toward(
+		owner.velocity.x, max_speed * dir, _acceleration * delta
+	)
 
 
 func apply_friction(delta: float) -> void:

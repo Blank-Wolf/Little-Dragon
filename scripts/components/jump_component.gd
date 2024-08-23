@@ -29,8 +29,7 @@ var _jumpbuf_timer: SceneTreeTimer
 
 
 func _ready() -> void:
-	if owner is not CharacterBody2D:
-		push_error("Component owner is not a CharacterBody2D")
+	assert(owner is CharacterBody2D, "Component owner is not a CharacterBody2D")
 
 
 func apply_gravity(delta: float, kind: GravityKind) -> void:
@@ -42,7 +41,7 @@ func apply_gravity(delta: float, kind: GravityKind) -> void:
 	owner.velocity.y += gravity * delta
 
 
-func do_jump(jumps_count: int, dummy: bool = false) -> void:
+func do_jump(jumps_count: int = 1, dummy: bool = false) -> void:
 	if not dummy:
 		owner.velocity.y = _jump_impulse
 	_rem_jumps -= jumps_count
