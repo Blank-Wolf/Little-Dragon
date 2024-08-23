@@ -12,7 +12,7 @@ func _ready() -> void:
 func _enter(msg: Dictionary) -> void:
 	if msg.has("was_on_floor") and msg.was_on_floor:
 		_jump.start_coyote() # Let the owner jump for a brief momemt
-		_jump.do_jump(1, true) # Sometimes, we start falling but not from a jump
+		_jump.do_jump(1, true) # Consume a jump since we didn't jump earlier
 
 
 func _physics_update(delta: float) -> void:

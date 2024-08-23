@@ -18,7 +18,7 @@ func _init(state_node: BaseState, state_transitions: Dictionary) -> void:
 
 	for transition: String in state_transitions.keys():
 		var condition = state_transitions[transition]
-		if not condition is Callable or not condition.is_valid():
+		if condition is not Callable or not condition.is_valid():
 			push_warning("Condition %s is not valid" % transition)
 			continue
 

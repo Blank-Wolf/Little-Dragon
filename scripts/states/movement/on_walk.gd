@@ -11,7 +11,7 @@ func _ready() -> void:
 
 func _exit() -> Dictionary:
 	return {
-		"was_on_floor": true, # The idle state is always on the floor
+		"was_on_floor": true, # The walk state is always on the floor
 	}
 
 

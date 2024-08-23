@@ -43,7 +43,7 @@ func _physics_process(delta: float) -> void:
 func setup(initial: String, states: Dictionary) -> void:
 	for state_name in states.keys():
 		var data = states[state_name]
-		if not data is StateData or data == null:
+		if data is not StateData or data == null:
 			push_error("Invalid state provided at setup: %s" % state_name)
 			continue
 

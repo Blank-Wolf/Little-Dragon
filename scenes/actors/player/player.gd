@@ -28,8 +28,8 @@ func _ready() -> void:
 			"Dash": _can_try_dash,
 		}),
 		"Jump": StateData.new($StateMachine/OnJump, {
-			"Fall": _is_falling,
 			"Dash": _can_try_dash,
+			"Fall": func(): return velocity.y >= 0.0,
 		}),
 		"Dash": StateData.new($StateMachine/OnDash, {
 			"Idle": func(): return velocity == Vector2.ZERO,
@@ -48,7 +48,7 @@ func _physics_process(_delta: float) -> void:
 
 
 func _is_falling() -> bool:
-	return not is_on_floor() or velocity.y > 0.0
+	return not is_on_floor()
 
 
 func _can_try_jump() -> bool:
@@ -57,7 +57,7 @@ func _can_try_jump() -> bool:
 		_jump.buffer_jump() # We can't jump, so buffer it to try later
 		return false
 
-	return is_jumping or _jump.is_buffered()
+	return (is_jumping or _jump.is_buffered()) and _jump.can_jump()
 
 
 func _can_try_dash() -> bool:
