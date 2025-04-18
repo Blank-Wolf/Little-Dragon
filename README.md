@@ -14,9 +14,6 @@ Little Dragon is a 2D platformer game where the player controls a little dragon 
 ## Development Team
 
 - **Press** (Project Owner) - Writes game design documents, builds the game in the engine, and programs gameplay systems.
-- **Johny** (Scriptwriter) - Creates the game's story, develops 2D pixel art sprites, and follows Press's directions.
-- **Tony** (Marketing Director) - Manages the company's accounts, keeps the community active, and leads the art and script team when needed.
-- **Nick** (2D Artist) - Creates lineart and concept art.
 - **ACube** (Programmer) - Develops complex systems and reviews game code.
 
 ## Project Structure
