@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://c1h7ahujb7cda"]
 
-[ext_resource type="PackedScene" uid="uid://coipg3p5pwtpm" path="res://scenes/actors/player/player.tscn" id="1_6tdi3"]
-[ext_resource type="Texture2D" uid="uid://f81h57u1vqhp" path="res://assets/sprites/test.png" id="2_mk3cf"]
+[ext_resource type="PackedScene" uid="uid://coipg3p5pwtpm" path="res://scenes/actors/player/player.tscn" id="1_16x7c"]
+[ext_resource type="Texture2D" uid="uid://f81h57u1vqhp" path="res://assets/sprites/test.png" id="2_6rgxd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ytwps"]
 size = Vector2(1024, 32)
@@ -17,7 +17,7 @@ size = Vector2(32, 256)
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_6tdi3")]
+[node name="Player" parent="." instance=ExtResource("1_16x7c")]
 position = Vector2(560, 168)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -37,7 +37,7 @@ shape = SubResource("RectangleShape2D_ytwps")
 
 [node name="Sprite" type="Sprite2D" parent="TestGround"]
 scale = Vector2(32, 1)
-texture = ExtResource("2_mk3cf")
+texture = ExtResource("2_6rgxd")
 
 [node name="TestGround2" type="StaticBody2D" parent="."]
 position = Vector2(920, 392)
@@ -50,7 +50,7 @@ shape = SubResource("RectangleShape2D_33g3k")
 
 [node name="Sprite" type="Sprite2D" parent="TestGround2"]
 scale = Vector2(32, 1)
-texture = ExtResource("2_mk3cf")
+texture = ExtResource("2_6rgxd")
 
 [node name="TestGround3" type="StaticBody2D" parent="."]
 position = Vector2(48, 648)
@@ -63,7 +63,7 @@ shape = SubResource("RectangleShape2D_2dglh")
 
 [node name="Sprite" type="Sprite2D" parent="TestGround3"]
 scale = Vector2(32, 1)
-texture = ExtResource("2_mk3cf")
+texture = ExtResource("2_6rgxd")
 
 [node name="TestGround4" type="StaticBody2D" parent="."]
 position = Vector2(192, 504)
@@ -76,4 +76,4 @@ shape = SubResource("RectangleShape2D_xf0pt")
 
 [node name="Sprite" type="Sprite2D" parent="TestGround4"]
 scale = Vector2(1, 8)
-texture = ExtResource("2_mk3cf")
+texture = ExtResource("2_6rgxd")
