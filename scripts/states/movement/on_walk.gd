@@ -1,6 +1,6 @@
 extends BaseState
 
-var _controller: PlayerController
+var _controller: Controller
 var _movement: MovementComponent
 
 

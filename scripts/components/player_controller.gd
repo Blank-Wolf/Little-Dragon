@@ -1,10 +1,9 @@
 class_name PlayerController
-extends Node
+extends Controller
 
 @export var dash_direction_time: float = 0.1
 @export var has_directional_dash := true
 
-var direction: Vector2
 var prev_direction: float
 var dash_direction: Vector2
 

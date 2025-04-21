@@ -2,7 +2,7 @@ extends BaseState
 
 var _jump: JumpComponent
 var _movement: MovementComponent
-var _controller: PlayerController
+var _controller: Controller
 
 
 func _ready() -> void:
