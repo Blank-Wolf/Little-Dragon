@@ -1,9 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://e0hwmtgljy3d"]
+[gd_scene load_steps=14 format=3 uid="uid://e0hwmtgljy3d"]
 
 [ext_resource type="Texture2D" uid="uid://urglhe8oxyne" path="res://assets/sprites/red.png" id="1_812cx"]
 [ext_resource type="Script" uid="uid://c5sbmklejfoal" path="res://scenes/actors/enemys/enemy.gd" id="1_obo6d"]
+[ext_resource type="Script" uid="uid://b78qwsbx1picn" path="res://scripts/components/enemy_controller.gd" id="3_i0hck"]
+[ext_resource type="Script" uid="uid://ia6aho5i637n" path="res://scripts/core/state_machine.gd" id="4_qg3bs"]
+[ext_resource type="Script" uid="uid://ceob7rqywwxm4" path="res://scripts/components/movement_component.gd" id="4_rulfm"]
+[ext_resource type="Script" uid="uid://b6rxe5fqeb5bb" path="res://scripts/states/movement/on_idle.gd" id="5_rulfm"]
+[ext_resource type="Script" uid="uid://bq6f3w6ncmeiu" path="res://scripts/components/jump_component.gd" id="5_sef37"]
+[ext_resource type="Script" uid="uid://btcklyyv34xev" path="res://scripts/states/movement/on_walk.gd" id="6_sef37"]
+[ext_resource type="Script" uid="uid://dapdwy5204dgu" path="res://scripts/states/movement/on_fall.gd" id="7_uw10j"]
+[ext_resource type="Script" uid="uid://rvx2yx8t0077" path="res://scripts/states/movement/on_jump.gd" id="8_3jojp"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_812cx"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sef37"]
 size = Vector2(32, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i0hck"]
@@ -21,10 +29,11 @@ animations = [{
 }]
 
 [node name="Enemy" type="CharacterBody2D"]
+collision_mask = 2
 script = ExtResource("1_obo6d")
 
 [node name="Shape" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_812cx")
+shape = SubResource("RectangleShape2D_sef37")
 
 [node name="Hitbox" type="Area2D" parent="."]
 
@@ -33,3 +42,32 @@ shape = SubResource("RectangleShape2D_i0hck")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_obo6d")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="EnemyController" type="Node" parent="."]
+script = ExtResource("3_i0hck")
+metadata/_custom_type_script = "uid://cpt7molxq0xac"
+
+[node name="MovementComponent" type="Node" parent="."]
+script = ExtResource("4_rulfm")
+metadata/_custom_type_script = "uid://ceob7rqywwxm4"
+
+[node name="JumpComponent" type="Node" parent="."]
+script = ExtResource("5_sef37")
+metadata/_custom_type_script = "uid://bq6f3w6ncmeiu"
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("4_qg3bs")
+
+[node name="OnIdle" type="Node" parent="StateMachine"]
+script = ExtResource("5_rulfm")
+
+[node name="OnWalk" type="Node" parent="StateMachine"]
+script = ExtResource("6_sef37")
+
+[node name="OnFall" type="Node" parent="StateMachine"]
+script = ExtResource("7_uw10j")
+
+[node name="OnJump" type="Node" parent="StateMachine"]
+script = ExtResource("8_3jojp")
