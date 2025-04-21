@@ -7,6 +7,7 @@ extends CharacterBody2D
 @onready var _controller := $EnemyController
 @onready var _jump := $JumpComponent
 
+var _on_player: bool = false
 
 func _ready() -> void:
 	_controller.points = points
@@ -38,3 +39,11 @@ func _physics_process(_delta: float) -> void:
 
 func _is_falling() -> bool:
 	return not is_on_floor()
+
+
+func _on_hitbox_body_entered(_body: Node2D) -> void:
+	_on_player = true
+
+
+func _on_hitbox_body_exited(_body: Node2D) -> void:
+	_on_player = false
