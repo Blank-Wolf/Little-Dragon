@@ -1,9 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://coipg3p5pwtpm"]
+[gd_scene load_steps=16 format=3 uid="uid://coipg3p5pwtpm"]
 
 [ext_resource type="Script" uid="uid://bjegv1l42xo17" path="res://scenes/actors/player/player.gd" id="1_xn4dn"]
 [ext_resource type="Texture2D" uid="uid://f81h57u1vqhp" path="res://assets/sprites/test.png" id="2_nsjek"]
 [ext_resource type="Script" uid="uid://ceob7rqywwxm4" path="res://scripts/components/movement_component.gd" id="3_ddbir"]
-[ext_resource type="Script" uid="uid://ia6aho5i637n" path="res://scripts/state_machine.gd" id="3_f8k5p"]
+[ext_resource type="Script" uid="uid://ia6aho5i637n" path="res://scripts/core/state_machine.gd" id="3_f8k5p"]
 [ext_resource type="Script" uid="uid://dfaorv1o6ut2a" path="res://scripts/components/player_controller.gd" id="3_xioh4"]
 [ext_resource type="Script" uid="uid://bq6f3w6ncmeiu" path="res://scripts/components/jump_component.gd" id="4_tyiwy"]
 [ext_resource type="Script" uid="uid://bwm810rx6eceo" path="res://scripts/components/dash_component.gd" id="5_dwgrk"]
@@ -15,6 +15,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_14nni"]
 size = Vector2(32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_inh5e"]
+radius = 26.6833
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_eo4ny"]
 animations = [{
@@ -28,11 +31,19 @@ animations = [{
 }]
 
 [node name="Player" type="CharacterBody2D"]
-collision_mask = 2
+collision_layer = 2
+collision_mask = 5
 script = ExtResource("1_xn4dn")
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_14nni")
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+shape = SubResource("CircleShape2D_inh5e")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_eo4ny")
@@ -66,3 +77,6 @@ script = ExtResource("10_84s2a")
 
 [node name="OnDash" type="Node" parent="StateMachine"]
 script = ExtResource("8_bqf0a")
+
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="hitbox" to="." method="_on_hitbox_body_exited"]

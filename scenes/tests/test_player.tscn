@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c1h7ahujb7cda"]
+[gd_scene load_steps=8 format=3 uid="uid://c1h7ahujb7cda"]
 
 [ext_resource type="PackedScene" uid="uid://coipg3p5pwtpm" path="res://scenes/actors/player/player.tscn" id="1_16x7c"]
 [ext_resource type="Texture2D" uid="uid://f81h57u1vqhp" path="res://assets/sprites/test.png" id="2_6rgxd"]
+[ext_resource type="PackedScene" uid="uid://e0hwmtgljy3d" path="res://scenes/actors/enemys/sample_enemy.tscn" id="3_6rgxd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ytwps"]
 size = Vector2(1024, 32)
@@ -17,18 +18,18 @@ size = Vector2(32, 256)
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_16x7c")]
-position = Vector2(560, 168)
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-limit_left = 0
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-2, 428)
+limit_left = -100000
 limit_top = 0
 editor_draw_limits = true
 editor_draw_drag_margin = true
 
+[node name="Player" parent="." instance=ExtResource("1_16x7c")]
+position = Vector2(560, 168)
+
 [node name="TestGround" type="StaticBody2D" parent="."]
 position = Vector2(600, 904)
-collision_layer = 2
 collision_mask = 0
 metadata/_edit_group_ = true
 
@@ -41,7 +42,6 @@ texture = ExtResource("2_6rgxd")
 
 [node name="TestGround2" type="StaticBody2D" parent="."]
 position = Vector2(920, 392)
-collision_layer = 2
 collision_mask = 0
 metadata/_edit_group_ = true
 
@@ -54,7 +54,6 @@ texture = ExtResource("2_6rgxd")
 
 [node name="TestGround3" type="StaticBody2D" parent="."]
 position = Vector2(48, 648)
-collision_layer = 2
 collision_mask = 0
 metadata/_edit_group_ = true
 
@@ -67,7 +66,6 @@ texture = ExtResource("2_6rgxd")
 
 [node name="TestGround4" type="StaticBody2D" parent="."]
 position = Vector2(192, 504)
-collision_layer = 2
 collision_mask = 0
 metadata/_edit_group_ = true
 
@@ -77,3 +75,13 @@ shape = SubResource("RectangleShape2D_xf0pt")
 [node name="Sprite" type="Sprite2D" parent="TestGround4"]
 scale = Vector2(1, 8)
 texture = ExtResource("2_6rgxd")
+
+[node name="Enemy" parent="." node_paths=PackedStringArray("points") instance=ExtResource("3_6rgxd")]
+position = Vector2(-109, 510)
+points = [NodePath("../Node2D"), NodePath("../Node2D2")]
+
+[node name="Node2D2" type="Node2D" parent="."]
+position = Vector2(-400, 581)
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(92, 562)

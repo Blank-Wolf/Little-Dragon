@@ -12,11 +12,6 @@ func _enter_tree() -> void:
 	owner.set_meta(&"Controller", self)
 
 
-func _ready() -> void:
-	if points.size() != 0:
-		print("point 1: ", points[0].position)
-
-
 func patrol() -> void:
 	if points.size() != 0:
 		if _target == null:
@@ -25,5 +20,5 @@ func patrol() -> void:
 		if abs(_target.position.x - owner.position.x) <= 2.0:
 			_curr_target = (_curr_target + 1) % points.size()
 			_target = points[_curr_target]
-					
+
 		direction.x = sign(_target.position.x - owner.position.x)

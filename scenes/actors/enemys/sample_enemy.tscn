@@ -15,7 +15,7 @@
 size = Vector2(32, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i0hck"]
-size = Vector2(64, 42)
+size = Vector2(40, 42)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_obo6d"]
 animations = [{
@@ -29,13 +29,16 @@ animations = [{
 }]
 
 [node name="Enemy" type="CharacterBody2D"]
-collision_mask = 2
+collision_layer = 4
+collision_mask = 3
 script = ExtResource("1_obo6d")
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_sef37")
 
 [node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
 
 [node name="Shape" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource("RectangleShape2D_i0hck")
@@ -47,7 +50,6 @@ sprite_frames = SubResource("SpriteFrames_obo6d")
 
 [node name="EnemyController" type="Node" parent="."]
 script = ExtResource("3_i0hck")
-metadata/_custom_type_script = "uid://cpt7molxq0xac"
 
 [node name="MovementComponent" type="Node" parent="."]
 script = ExtResource("4_rulfm")
@@ -71,3 +73,6 @@ script = ExtResource("7_uw10j")
 
 [node name="OnJump" type="Node" parent="StateMachine"]
 script = ExtResource("8_3jojp")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="Hitbox" to="." method="_on_hitbox_body_exited"]
