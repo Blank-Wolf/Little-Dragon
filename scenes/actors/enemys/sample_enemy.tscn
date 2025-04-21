@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://e0hwmtgljy3d"]
+
+[ext_resource type="Texture2D" uid="uid://urglhe8oxyne" path="res://assets/sprites/red.png" id="1_812cx"]
+[ext_resource type="Script" uid="uid://c5sbmklejfoal" path="res://scenes/actors/enemys/enemy.gd" id="1_obo6d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_812cx"]
+size = Vector2(32, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i0hck"]
+size = Vector2(64, 42)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_obo6d"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_812cx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_obo6d")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_812cx")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="Shape" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("RectangleShape2D_i0hck")
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_obo6d")
