@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://e0hwmtgljy3d"]
+[gd_scene load_steps=16 format=3 uid="uid://e0hwmtgljy3d"]
 
 [ext_resource type="Texture2D" uid="uid://urglhe8oxyne" path="res://assets/sprites/red.png" id="1_812cx"]
 [ext_resource type="Script" uid="uid://c5sbmklejfoal" path="res://scenes/actors/enemys/enemy.gd" id="1_obo6d"]
@@ -15,8 +15,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sef37"]
 size = Vector2(32, 32)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_i0hck"]
-size = Vector2(40, 42)
+[sub_resource type="CircleShape2D" id="CircleShape2D_uw10j"]
+radius = 15.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3jojp"]
+radius = 19.0263
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_obo6d"]
 animations = [{
@@ -33,20 +36,23 @@ animations = [{
 collision_layer = 4
 script = ExtResource("1_obo6d")
 
-[node name="Shape" type="CollisionShape2D" parent="."]
+[node name="Colider" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_sef37")
 
-[node name="Hitbox" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 2
+[node name="HitBox" type="Area2D" parent="."]
 
-[node name="Shape" type="CollisionShape2D" parent="Hitbox"]
-shape = SubResource("RectangleShape2D_i0hck")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_uw10j")
+debug_color = Color(0, 1, 0, 0.419608)
+
+[node name="HurtBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("CircleShape2D_3jojp")
+debug_color = Color(1, 0, 0, 0.419608)
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_obo6d")
-
-[node name="Node2D" type="Node2D" parent="."]
 
 [node name="EnemyController" type="Node" parent="."]
 script = ExtResource("3_i0hck")
@@ -78,5 +84,7 @@ script = ExtResource("7_uw10j")
 [node name="OnJump" type="Node" parent="StateMachine"]
 script = ExtResource("8_3jojp")
 
-[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
-[connection signal="body_exited" from="Hitbox" to="." method="_on_hitbox_body_exited"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
+[connection signal="body_exited" from="HitBox" to="." method="_on_hit_box_body_exited"]
+[connection signal="body_entered" from="HurtBox" to="." method="_on_hurt_box_body_entered"]
+[connection signal="body_exited" from="HurtBox" to="." method="_on_hurt_box_body_exited"]

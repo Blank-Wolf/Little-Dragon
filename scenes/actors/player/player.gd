@@ -1,5 +1,5 @@
 class_name Player
-extends CharacterBody2D
+extends Character
 
 @onready var _state_machine := $StateMachine
 
@@ -45,10 +45,6 @@ func _physics_process(_delta: float) -> void:
 	if is_on_floor():
 		_jump.reset()
 		_dash.reset()
-
-
-func _is_falling() -> bool:
-	return not is_on_floor()
 
 
 func _can_try_jump() -> bool:
