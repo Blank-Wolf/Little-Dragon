@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://e0hwmtgljy3d"]
+[gd_scene load_steps=15 format=3 uid="uid://e0hwmtgljy3d"]
 
 [ext_resource type="Texture2D" uid="uid://urglhe8oxyne" path="res://assets/sprites/red.png" id="1_812cx"]
 [ext_resource type="Script" uid="uid://c5sbmklejfoal" path="res://scenes/actors/enemys/enemy.gd" id="1_obo6d"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://btcklyyv34xev" path="res://scripts/states/movement/on_walk.gd" id="6_sef37"]
 [ext_resource type="Script" uid="uid://dapdwy5204dgu" path="res://scripts/states/movement/on_fall.gd" id="7_uw10j"]
 [ext_resource type="Script" uid="uid://rvx2yx8t0077" path="res://scripts/states/movement/on_jump.gd" id="8_3jojp"]
+[ext_resource type="Script" uid="uid://b3dw3mujl2ny7" path="res://scripts/components/combat_component.gd" id="11_uw10j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sef37"]
 size = Vector2(32, 32)
@@ -30,7 +31,6 @@ animations = [{
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 4
-collision_mask = 3
 script = ExtResource("1_obo6d")
 
 [node name="Shape" type="CollisionShape2D" parent="."]
@@ -58,6 +58,10 @@ metadata/_custom_type_script = "uid://ceob7rqywwxm4"
 [node name="JumpComponent" type="Node" parent="."]
 script = ExtResource("5_sef37")
 metadata/_custom_type_script = "uid://bq6f3w6ncmeiu"
+
+[node name="CombatComponent" type="Node" parent="."]
+script = ExtResource("11_uw10j")
+metadata/_custom_type_script = "uid://b3dw3mujl2ny7"
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_qg3bs")
