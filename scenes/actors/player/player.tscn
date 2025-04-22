@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://coipg3p5pwtpm"]
+[gd_scene load_steps=17 format=3 uid="uid://coipg3p5pwtpm"]
 
 [ext_resource type="Script" uid="uid://bjegv1l42xo17" path="res://scenes/actors/player/player.gd" id="1_xn4dn"]
 [ext_resource type="Texture2D" uid="uid://f81h57u1vqhp" path="res://assets/sprites/test.png" id="2_nsjek"]
@@ -13,12 +13,6 @@
 [ext_resource type="Script" uid="uid://dapdwy5204dgu" path="res://scripts/states/movement/on_fall.gd" id="9_guyyn"]
 [ext_resource type="Script" uid="uid://rvx2yx8t0077" path="res://scripts/states/movement/on_jump.gd" id="10_84s2a"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_14nni"]
-size = Vector2(32, 32)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_inh5e"]
-radius = 26.6833
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_eo4ny"]
 animations = [{
 "frames": [{
@@ -30,22 +24,38 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_14nni"]
+size = Vector2(32, 32)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_inh5e"]
+radius = 16.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hcvpp"]
+radius = 26.0768
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_xn4dn")
 
-[node name="Shape" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_14nni")
-
-[node name="hitbox" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 5
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
-shape = SubResource("CircleShape2D_inh5e")
-
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_eo4ny")
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_14nni")
+debug_color = Color(0, 1, 0.972549, 0.419608)
+
+[node name="HurtBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+shape = SubResource("CircleShape2D_inh5e")
+debug_color = Color(0.854406, 0, 0, 0.419608)
+
+[node name="HitBox" type="Area2D" parent="."]
+position = Vector2(3, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+shape = SubResource("CircleShape2D_hcvpp")
+debug_color = Color(1.8049e-06, 0.540633, 9.62615e-08, 0.419608)
 
 [node name="PlayerController" type="Node" parent="."]
 script = ExtResource("3_xioh4")
@@ -77,5 +87,7 @@ script = ExtResource("10_84s2a")
 [node name="OnDash" type="Node" parent="StateMachine"]
 script = ExtResource("8_bqf0a")
 
-[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]
-[connection signal="body_exited" from="hitbox" to="." method="_on_hitbox_body_exited"]
+[connection signal="body_entered" from="HurtBox" to="." method="_on_hurt_box_body_entered"]
+[connection signal="body_exited" from="HurtBox" to="." method="_on_hurt_box_body_exited"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
+[connection signal="body_exited" from="HitBox" to="." method="_on_hit_box_body_exited"]

@@ -14,14 +14,15 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	# TODO: add cooldown to attack
 	if can_attack():
 		attack()
 
 
 func attack() -> void:
+	# TODO: decrease player/enemy life
 	print("Attack!")
-	pass
 
 
 func can_attack() -> bool:
-	return owner.has_body_entered
+	return owner.has_hit_entered
