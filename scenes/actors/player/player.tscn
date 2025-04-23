@@ -28,13 +28,14 @@ animations = [{
 size = Vector2(32, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_inh5e"]
-radius = 16.0
+radius = 20.025
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hcvpp"]
 radius = 26.0768
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
+collision_mask = 9
 script = ExtResource("1_xn4dn")
 
 [node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
@@ -45,13 +46,16 @@ shape = SubResource("RectangleShape2D_14nni")
 debug_color = Color(0, 1, 0.972549, 0.419608)
 
 [node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
 shape = SubResource("CircleShape2D_inh5e")
-debug_color = Color(0.854406, 0, 0, 0.419608)
 
 [node name="HitBox" type="Area2D" parent="."]
 position = Vector2(3, 1)
+collision_layer = 0
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 shape = SubResource("CircleShape2D_hcvpp")

@@ -11,6 +11,7 @@ func _is_falling() -> bool:
 
 
 func _on_hit_box_body_entered(body: Node2D) -> void:
+	print("hit entered")
 	collision_body = body
 	has_hit_entered = true
 
@@ -21,6 +22,7 @@ func _on_hit_box_body_exited(_body: Node2D) -> void:
 
 
 func _on_hurt_box_body_entered(body: Node2D) -> void:
+	print("hurt entered")
 	collision_body = body
 	has_hurt_entered = true
 
