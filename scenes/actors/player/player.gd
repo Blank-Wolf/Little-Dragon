@@ -62,3 +62,7 @@ func _can_try_dash() -> bool:
 		return false
 
 	return is_dashing and _dash.can_dash()
+
+
+func _on_hit_box_area_entered(_area: Area2D) -> void:
+	print("Enemy Was Hurt!")

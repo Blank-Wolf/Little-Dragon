@@ -18,15 +18,15 @@ size = Vector2(32, 256)
 
 [node name="Node2D" type="Node2D"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-2, 428)
+[node name="Player" parent="." instance=ExtResource("1_16x7c")]
+position = Vector2(560, 168)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+position = Vector2(0, 1)
 limit_left = -100000
 limit_top = 0
 editor_draw_limits = true
 editor_draw_drag_margin = true
-
-[node name="Player" parent="." instance=ExtResource("1_16x7c")]
-position = Vector2(560, 168)
 
 [node name="TestGround" type="StaticBody2D" parent="."]
 position = Vector2(600, 904)
