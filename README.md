@@ -1,4 +1,4 @@
-# Little Dragon
+# Little Dragon (ON PAUSE)
 
 Welcome to the development repository for Little Dragon, a 2D platformer game. This README contains important information for the development team.
 
